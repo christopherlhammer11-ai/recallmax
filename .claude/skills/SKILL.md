@@ -1,3 +1,9 @@
+---
+name: "RecallMax"
+description: "Enhances AI memory capabilities with long-context support."
+tags: [memory, AI, context, summarization]
+---
+
 # RecallMax — God-Tier Long-Context Memory
 
 ## Overview

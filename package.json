@@ -1,0 +1,51 @@
+{
+  "name": "recallmax",
+  "version": "0.1.0",
+  "description": "Memory compression and persistence for LLM agents. Compresses conversation histories into high-density context that fits smaller windows.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "recallmax": "dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node src/cli.ts",
+    "test": "jest --forceExit",
+    "test:watch": "jest --watch",
+    "prepublishOnly": "npm run build && npm test",
+    "lint": "tsc --noEmit"
+  },
+  "keywords": [
+    "llm",
+    "memory",
+    "compression",
+    "agent",
+    "context-window",
+    "ai",
+    "genesis-marketplace"
+  ],
+  "author": "christopherlhammer11-ai",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/christopherlhammer11-ai/recallmax"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "commander": "^12.1.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.14.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.0"
+  }
+}
