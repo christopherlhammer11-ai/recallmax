@@ -1,122 +1,67 @@
 # RecallMax
 
-Memory compression for LLM agents. Takes conversation histories, memory files, or raw text and compresses them into dense, structured context that fits smaller windows.
+**Long-term memory compression for AI agents.** RecallMax turns long conversations, notes, and project histories into compact memory records that can fit back into future agent context.
 
-No LLM calls. Pure algorithmic compression. Zero dependencies beyond `commander` for CLI.
+Demo: **Watch the demo:** [RecallMax Memory](https://christopherhammer.dev/assets/videos/narrated/project-demos/recallmax-memory-narrated.mp4)
 
-## Install
+## Who Uses It
 
-```bash
-npm install recallmax
-```
-
-## CLI Usage
-
-```bash
-# Compress a conversation file
-recallmax compress conversation.json
-
-# Pipe from stdin
-cat memory.md | recallmax compress
-
-# Target a specific token budget
-recallmax compress chat.json --max-tokens 200
-
-# Output formats: structured (default), markdown, prose
-recallmax compress chat.json --format markdown
-
-# Get raw JSON output
-recallmax compress chat.json --json
-
-# Check token stats without compressing
-recallmax stats large-context.md
-```
-
-## Programmatic API
-
-```typescript
-import { compress, compressText, compressFile } from 'recallmax';
-
-// From structured messages (OpenAI/Anthropic format)
-const memory = compress([
-  { role: 'user', content: 'Deploy to production' },
-  { role: 'assistant', content: 'Deployed v2.1.0 to prod. Zero errors.' },
-]);
-
-// From raw text (auto-detects format)
-const memory2 = compressText(`
-User: Fix the auth bug
-Assistant: Fixed null pointer in auth.ts line 42
-User: thanks
-Assistant: No problem!
-`);
-
-// From a file
-const memory3 = await compressFile('./conversation.json');
-
-// Access structured output
-console.log(memory.decisions);    // ['Deployed v2.1.0 to prod']
-console.log(memory.errors);       // []
-console.log(memory.facts);        // [...]
-console.log(memory.openQuestions); // []
-console.log(memory.metadata);     // { originalTokens, compressedTokens, compressionRatio, ... }
-```
+- AI agents with conversations longer than one context window
+- Coding agents that need to remember project decisions
+- Customer support bots that need issue history
+- Executive assistants that need preference and task memory
+- Local-first AI tools that should avoid reloading every document every time
 
 ## What It Does
 
-1. **Parses** any conversation format (JSON messages, markdown, role-prefixed, plain text)
-2. **Scores** every message by importance (decisions > errors > facts > questions > context > filler)
-3. **Filters** out filler (greetings, acknowledgments, "ok", "thanks", etc.)
-4. **Deduplicates** similar content using n-gram fingerprinting
-5. **Condenses** text by removing filler phrases within kept messages
-6. **Truncates** to fit your target token budget, prioritizing high-value content
+- Parses conversation-style input
+- Scores messages by importance
+- Preserves decisions, facts, errors, open questions, and constraints
+- Filters filler and duplicate text
+- Produces structured compressed memory
+- Works without an LLM call
 
-## Output Format
+## Why It Matters
 
-```
-DECISIONS:
-- Migrating from MySQL to PostgreSQL using pgloader + Prisma
-- Adding connection pooling with PgBouncer
+Agents do not become useful just because they can chat. They become useful when they remember the right things and forget the noise. RecallMax is the memory compression layer for that problem.
 
-FACTS:
-- Database has 50 tables, 2M rows
-- FK constraint on orders table
+## Example
 
-ERRORS/FIXES:
-- Fixed FK constraint error by reordering migration steps
+```ts
+import { compressText } from 'recallmax';
 
-OPEN QUESTIONS:
-- Should we update the API endpoints?
+const memory = compressText(longConversation, {
+  maxTokens: 800,
+});
 
-[10 messages | 170→193 tokens | 69% compression]
+console.log(memory.decisions);
+console.log(memory.openQuestions);
 ```
 
-## Options
-
-| Option | Default | Description |
-|--------|---------|-------------|
-| `maxTokens` | 800 | Target max tokens for compressed output |
-| `format` | `'structured'` | Output format: `structured`, `markdown`, `prose` |
-| `threshold` | 0.3 | Importance threshold (0-1). Content below this is dropped |
-| `preserveSystem` | `true` | Keep system messages verbatim |
-
-## Supported Input Formats
-
-- **JSON array**: `[{ "role": "user", "content": "..." }, ...]`
-- **JSON object**: `{ "role": "user", "content": "..." }`
-- **Role-prefixed**: `User: ...\nAssistant: ...`
-- **Markdown headers**: `### User\n...\n### Assistant\n...`
-- **Plain text**: Treated as a single block
-
-## Genesis Marketplace
-
-RecallMax is listed on the [Genesis Agent Marketplace](https://genesis-marketplace.vercel.app) as a free skill. Usage is optionally tracked for marketplace analytics (disable with `--no-telemetry`).
+## Quick Start
 
 ```bash
-# Verify marketplace listing
-recallmax verify
+npm install
+npm run build
+npm test
 ```
 
-## License
+CLI usage:
 
-MIT
+```bash
+recallmax compress conversation.json --max-tokens 800
+cat memory.md | recallmax compress --format markdown
+```
+
+## Portfolio Context
+
+RecallMax supports the larger local-first agent story: HammerLock needs memory, Craig needs project continuity, and production agents need compressed context that survives beyond one session.
+
+---
+
+Built by **Christopher L. Hammer** - self-taught AI/product builder shipping local-first tools, demos, and real product surfaces.
+
+- Portfolio: [christopherhammer.dev](https://christopherhammer.dev)
+- Proof demos: [https://christopherhammer.dev#proof](https://christopherhammer.dev#proof)
+- GitHub: [christopherlhammer11-ai](https://github.com/christopherlhammer11-ai)
+
