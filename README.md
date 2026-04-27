@@ -2,7 +2,7 @@
 
 **Long-term memory compression for AI agents.** RecallMax turns long conversations, notes, and project histories into compact memory records that can fit back into future agent context.
 
-Demo: **Watch the demo:** [RecallMax Memory](https://christopherhammer.dev/assets/videos/narrated/project-demos/recallmax-memory-narrated.mp4)
+**Demo:** [RecallMax Memory](https://christopherhammer.dev/assets/videos/narrated/project-demos/recallmax-memory-narrated.mp4)
 
 ## Who Uses It
 
